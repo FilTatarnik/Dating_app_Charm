@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';import { AuthProvider } from './contexts/AuthContext';
+import { AppProvider } from './contexts/AppContext';
+import WelcomeScreen from './components/WelcomeScreen';
+import RegistrationForm from './components/RegistrationForm';
+import LoginForm from './components/LoginForm';
+import ProfileSetup from './components/ProfileSetup';
+import MainPage from './components/MainPage';
+import MatchList from './components/MatchList';
+import ChatInterface from './components/ChatInterface';
+import ProfilePage from './components/ProfilePage';
+import SettingsPage from './components/SettingsPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <AppProvider>
+        <Routes>
+          <Route path="/" element={<WelcomeScreen />} />
+          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/profile-setup" element={<ProfileSetup />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="/matches" element={<MatchList />} />
+          <Route path="/chat/:matchId" element={<ChatInterface />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </AppProvider>
+    </AuthProvider>
   );
 }
 
