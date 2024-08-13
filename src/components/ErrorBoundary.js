@@ -1,4 +1,6 @@
 import React from 'react';
+import '../App.css';
+import '../index.css';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -16,7 +18,14 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong. Please try refreshing the page.</h1>;
+      return (
+        <div className="App">
+          <div className="content-container">
+            <h1>Oops! Something went wrong.</h1>
+            <p>Please try refreshing the page. If the problem persists, contact support.</p>
+          </div>
+        </div>
+      );
     }
 
     return this.props.children;

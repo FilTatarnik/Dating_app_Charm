@@ -10,6 +10,8 @@ import MatchList from './components/MatchList';
 import ChatInterface from './components/ChatInterface';
 import ProfilePage from './components/ProfilePage';
 import SettingsPage from './components/SettingsPage';
+import './App.css';
+import './index.css';
 
 function App() {
   return (

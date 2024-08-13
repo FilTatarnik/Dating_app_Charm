@@ -38,6 +38,9 @@ export const matchService = {
   getPotentialMatches: () => api.get('/matches/potential'),
   likeUser: (userId) => api.post('/matches/like', { likedUserId: userId }),
   getMatches: () => api.get('/matches'),
+  getPotentialMatches: () => api.get('/matches/potential'),
+  likeUser: (userId) => api.post('/matches/like', { likedUserId: userId }),
+  getMatches: () => api.get('/matches'),
 };
 
 export const messageService = {

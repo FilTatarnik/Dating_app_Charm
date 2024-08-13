@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { userService } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import PhotoUpload from './PhotoUpload';
+import '../App.css';
+import '../index.css';
 
 function ProfileSetup() {
   const [profile, setProfile] = useState({
@@ -50,60 +52,62 @@ function ProfileSetup() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!user) return null; //
+  if (loading) return <div className="App"><div className="content-container">Loading...</div></div>;
+  if (!user) return null;
 
   return (
-    <div className="profile-setup-container">
-      <h2>Complete Your Profile</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="bio">Bio:</label>
-          <textarea
-            id="bio"
-            name="bio"
-            value={profile.bio}
-            onChange={handleChange}
-            placeholder="Tell us about yourself"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="gender">Gender:</label>
-          <input
-            type="text"
-            id="gender"
-            name="gender"
-            value={profile.gender}
-            onChange={handleChange}
-            placeholder="Your gender"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="orientation">Orientation:</label>
-          <input
-            type="text"
-            id="orientation"
-            name="orientation"
-            value={profile.orientation}
-            onChange={handleChange}
-            placeholder="Your orientation"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="location">Location:</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={profile.location}
-            onChange={handleChange}
-            placeholder="Your location"
-          />
-        </div>
-        <PhotoUpload userId={user.id} />
-        <button type="submit" className="submit-button">Complete Profile</button>
-      </form>
+    <div className="App">
+      <div className="content-container">
+        <h1>Complete Your Profile</h1>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit} className="profile-form">
+          <div className="form-group">
+            <label htmlFor="bio">Bio:</label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={profile.bio}
+              onChange={handleChange}
+              placeholder="Tell us about yourself"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="gender">Gender:</label>
+            <input
+              type="text"
+              id="gender"
+              name="gender"
+              value={profile.gender}
+              onChange={handleChange}
+              placeholder="Your gender"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="orientation">Orientation:</label>
+            <input
+              type="text"
+              id="orientation"
+              name="orientation"
+              value={profile.orientation}
+              onChange={handleChange}
+              placeholder="Your orientation"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="location">Location:</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={profile.location}
+              onChange={handleChange}
+              placeholder="Your location"
+            />
+          </div>
+          <PhotoUpload userId={user.id} />
+          <button type="submit" className="submit-button">Complete Profile</button>
+        </form>
+      </div>
     </div>
   );
 }

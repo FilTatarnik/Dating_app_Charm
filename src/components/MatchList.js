@@ -1,40 +1,61 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useApp } from '../contexts/AppContext';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { matchService } from '../services/api';
+import '../App.css';
+import '../index.css';
 
-function MatchList() {
-  const { matches, setMatches, loading, setLoading, error, setError } = useApp();
+const MatchList = () => {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMatches = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const userMatches = await matchService.getMatches();
-        setMatches(userMatches);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchMatches();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  const fetchMatches = async () => {
+    try {
+      const response = await matchService.getMatches();
+      setMatches(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch matches');
+      console.error('Error fetching matches:', err);
+      setLoading(false);
+    }
+  };
+
+  const navigateToChat = (matchId) => {
+    navigate(`/chat/${matchId}`);
+  };
+
+  if (loading) return <div className="App"><div className="content-container">Loading...</div></div>;
+  if (error) return <div className="App"><div className="content-container">Error: {error}</div></div>;
 
   return (
-    <div>
-      <h2>Your Matches</h2>
-      {matches.map(match => (
-        <Link key={match.id} to={`/chat/${match.id}`}>
-          <div>{match.name}</div>
-        </Link>
-      ))}
+    <div className="App">
+      <div className="content-container">
+        <h1>Your Matches</h1>
+        {matches.length > 0 ? (
+          <ul className="match-list">
+            {matches.map(match => (
+              <li key={match.id} className="match-item">
+                <div>
+                  <h3>{match.name}</h3>
+                  <p>{match.bio || 'No bio available'}</p>
+                </div>
+                <button onClick={() => navigateToChat(match.id)}>Chat</button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You don't have any matches yet. Keep swiping!</p>
+        )}
+        <button onClick={() => navigate('/main')} className="secondary">Back to Main</button>
+      </div>
     </div>
   );
-}
+};
 
 export default MatchList;

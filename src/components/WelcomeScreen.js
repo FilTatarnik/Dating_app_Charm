@@ -1,15 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
+import '../index.css';
 
 function WelcomeScreen() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1>Welcome to Dating App</h1>
-      <button onClick={() => navigate('/register')}>Register</button>
-      <button onClick={() => navigate('/login')}>Login</button>
+    <div className="App">
+      <div className="content-container welcome-screen">
+        <h1>Welcome to Charm</h1>
+        <p>Find your perfect match today!</p>
+        <div className="button-group">
+          <button onClick={() => navigate('/register')} className="submit-button">Register</button>
+          <button onClick={() => navigate('/login')} className="secondary">Login</button>
+        </div>
+      </div>
     </div>
   );
 }
+
 export default WelcomeScreen;

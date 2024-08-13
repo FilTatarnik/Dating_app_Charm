@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { messageService } from '../services/api';
 import ChatMessage from './ChatMessage';
+import '../App.css';
+import '../index.css';
 
 function ChatInterface() {
   const [messages, setMessages] = useState([]);
@@ -21,28 +23,35 @@ function ChatInterface() {
   }, [matchId]);
 
   const handleSend = async () => {
+    if (!newMessage.trim()) return;
     try {
       await messageService.sendMessage(matchId, newMessage);
+      setMessages([...messages, { content: newMessage, sender: 'user' }]);
       setNewMessage('');
-      // Optionally, refetch messages or add the new message to the state
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
 
   return (
-    <div>
-      <div className="message-container">
-        {messages.map(message => (
-          <ChatMessage key={message.id} message={message} />
-        ))}
+    <div className="App">
+      <div className="content-container chat-interface">
+        <h1>Chat</h1>
+        <div className="message-container">
+          {messages.map((message, index) => (
+            <ChatMessage key={index} message={message} />
+          ))}
+        </div>
+        <div className="message-input">
+          <input 
+            type="text" 
+            value={newMessage} 
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+          />
+          <button onClick={handleSend}>Send</button>
+        </div>
       </div>
-      <input 
-        type="text" 
-        value={newMessage} 
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-      <button onClick={handleSend}>Send</button>
     </div>
   );
 }
