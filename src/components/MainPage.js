@@ -22,6 +22,7 @@ const MainPage = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await userService.getProfile();
+      console.log('User profile response data:', response.data);
       setUserProfile(response.data);
     } catch (err) {
       setError('Failed to fetch user profile');
