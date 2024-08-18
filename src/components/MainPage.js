@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { matchService, userService } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import '../App.css';
-import '../index.css';
 
 const MainPage = () => {
   const [potentialMatches, setPotentialMatches] = useState([]);
@@ -11,6 +10,7 @@ const MainPage = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [animationClass, setAnimationClass] = useState('');
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -32,7 +32,6 @@ const MainPage = () => {
   const fetchPotentialMatches = async () => {
     try {
       const response = await matchService.getPotentialMatches();
-      console.log('Potential matches data:', response.data);
       setPotentialMatches(response.data);
       setLoading(false);
     } catch (err) {
@@ -44,24 +43,32 @@ const MainPage = () => {
 
   const handleLike = async () => {
     if (!currentMatch) return;
-    try {
-      await matchService.likeUser(currentMatch.id);
-      moveToNextMatch();
-    } catch (err) {
-      setError('Failed to like user');
-      console.error('Error liking user:', err);
-    }
+    setAnimationClass('animate__animated animate__fadeOutRight');
+    setTimeout(async () => {
+      try {
+        await matchService.likeUser(currentMatch.id);
+        moveToNextMatch();
+      } catch (err) {
+        setError('Failed to like user');
+        console.error('Error liking user:', err);
+      }
+      setAnimationClass('');
+    }, 500);
   };
 
   const handleDislike = () => {
-    moveToNextMatch();
+    setAnimationClass('animate__animated animate__fadeOutLeft');
+    setTimeout(() => {
+      moveToNextMatch();
+      setAnimationClass('');
+    }, 500);
   };
 
   const moveToNextMatch = () => {
     if (currentMatchIndex < potentialMatches.length - 1) {
       setCurrentMatchIndex(currentMatchIndex + 1);
     } else {
-      setCurrentMatchIndex(potentialMatches.length);
+      setPotentialMatches([]);
     }
   };
 
@@ -75,25 +82,23 @@ const MainPage = () => {
       <div className="content-container">
         <h1>Welcome, {userProfile?.name || user?.name || 'User'}!</h1>
         
-        <div className="potential-match">
-          <h2>Potential Match</h2>
-          {currentMatch ? (
-            <div>
-              <p><strong>Name:</strong> {currentMatch.name}</p>
-              <p><strong>Bio:</strong> {currentMatch.bio || 'No bio available'}</p>
-              <p><strong>Location:</strong> {currentMatch.location || 'Location not specified'}</p>
-              <div className="button-group">
-                <button onClick={handleDislike}>Dislike</button>
-                <button onClick={handleLike}>Like</button>
-              </div>
+        {currentMatch ? (
+          <div className={`potential-match ${animationClass}`}>
+            <h2>Potential Match</h2>
+            <p><strong>Name:</strong> {currentMatch.name}</p>
+            <p><strong>Bio:</strong> {currentMatch.bio || 'No bio available'}</p>
+            <p><strong>Location:</strong> {currentMatch.location || 'Location not specified'}</p>
+            <div className="button-group">
+              <button onClick={handleDislike}>Dislike</button>
+              <button onClick={handleLike}>Like</button>
             </div>
-          ) : (
-            <div>
-              <p>No Potential Matches</p>
-              <p>Check back later for new potential matches!</p>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div>
+            <p>No Potential Matches</p>
+            <p>Check back later for new potential matches!</p>
+          </div>
+        )}
 
         <div className="button-group">
           <button onClick={() => navigate('/profile')}>View Profile</button>

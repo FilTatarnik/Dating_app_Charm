@@ -1,5 +1,7 @@
 /* Original styles remain unchanged */
 
+@import 'animate.css';
+
 .App {
   display: flex;
   justify-content: center;
@@ -144,12 +146,18 @@ button:hover {
 
 /* Potential Match Styles */
 .potential-match {
+  position: relative;
+  width: 100%;
   background-color: #f8f9fa;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
 }
+.animate__fadeOutLeft,
+.animate__fadeOutRight {
 
+
+}
 /* MatchCard Styles */
 .match-card {
   background-color: #f8f9fa;
@@ -167,6 +175,7 @@ button:hover {
 
 .match-item {
   display: flex;
+  
   justify-content: space-between;
   align-items: center;
   padding: 15px;
