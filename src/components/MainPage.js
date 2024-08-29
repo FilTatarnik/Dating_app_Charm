@@ -44,7 +44,7 @@ const MainPage = () => {
 
   const handleLike = async () => {
     if (!currentMatch) return;
-    setAnimationClass('animate__animated animate__fadeOutRight');
+    setAnimationClass('tumble-out-right');
     setTimeout(async () => {
       try {
         await matchService.likeUser(currentMatch.id);
@@ -58,7 +58,7 @@ const MainPage = () => {
   };
 
   const handleDislike = () => {
-    setAnimationClass('animate__animated animate__fadeOutLeft');
+    setAnimationClass('tumble-out-left');
     setTimeout(() => {
       moveToNextMatch();
       setAnimationClass('');
