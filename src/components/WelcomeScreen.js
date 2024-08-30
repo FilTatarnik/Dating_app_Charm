@@ -13,7 +13,7 @@ function WelcomeScreen() {
         <p>Find your perfect match today!</p>
         <div className="button-group">
           <button onClick={() => navigate('/register')} className="submit-button">Register</button>
-          <button onClick={() => navigate('/login')} className="secondary">Login</button>
+          <button onClick={() => navigate('/login')} className="submit-button">Login</button>
         </div>
       </div>
     </div>
